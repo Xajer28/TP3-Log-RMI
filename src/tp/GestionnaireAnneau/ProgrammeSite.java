@@ -8,40 +8,54 @@ import java.util.concurrent.Semaphore;
 
 public class ProgrammeSite {
 
-public static void main (String[] args) {
+	static int idRelai;
 	
+	
+public static void main (String[] args) {
+
 	String ipgestionnaire = args[0];
 	String mon_ip = args[1];
-	
+
 	AnneauInterface objgestionnaire = null;
 	ElectionInterface objsuccesseur = null;
 	ElectionImpl election = null;
-	
+
+
 	try {
-		//1 - Je récupère le Serializable Données du GestionnaireAnneau
+		//1 - Je rï¿½cupï¿½re le Serializable Donnï¿½es du GestionnaireAnneau
 		objgestionnaire = (AnneauInterface) Naming.lookup("rmi://"+ipgestionnaire+":3000/anneau");
 		Donnees data = objgestionnaire.recupInfos(mon_ip);
-		
-		System.out.println("Machine "+data.idmachine+" lancée !");
+
+		System.out.println("Machine "+data.idmachine+" lancÃ©e !");
 		System.out.println("-----------------------------------------");
 		System.out.println("Mon IP: " +mon_ip);
-		System.out.println("Mon ID: " +data.idmachine);	
-		System.out.println("ID de mon successeur: " +data.idsucesseur);
-		System.out.println("Lancer l'élection ? " +data.lance_election);	
+		System.out.println("Mon ID: " +data.idmachine);
+		System.out.println("ID de mon successeur: " +data.idsuccesseur);
+		System.out.println("Lancer l'Ã©lection ? " +data.lance_election);
 		System.out.println("-----------------------------------------");
-		
-		//2 - Je forme l'anneau en fonction de ce que GestionnaireAnneau m'a envoyé
-		
-		//définition de mon service d'élection
-		election = new ElectionImpl();
+
+		//2 - Je forme l'anneau en fonction de ce que GestionnaireAnneau m'a envoyï¿½
+
+		//dï¿½finition de mon service d'ï¿½lection
+		election = new ElectionImpl(data.idsuccesseur, data.idmachine );
 		Naming.rebind("rmi://"+ipgestionnaire+":3000/election"+data.idmachine, election);
-		
+
 		//attente que tous les autres sites (enregistrement des objets serveurs)
 		Thread.sleep(6000);
-		
-		//recuperation de la ref distante de l'objet serveur du successeur	
-		objsuccesseur = (ElectionInterface) Naming.lookup("rmi://"+ipgestionnaire+":3000/election"+data.idsucesseur);
-		System.out.println("site"+data.idmachine+" : a récupéré ref distante de "+"site"+data.idsucesseur);
+
+		//recuperation de la ref distante de l'objet serveur du successeur
+		objsuccesseur = (ElectionInterface) Naming.lookup("rmi://"+ipgestionnaire+":3000/election"+data.idsuccesseur);
+		election.setSuivant(objsuccesseur);
+
+		System.out.println("site"+data.idmachine+" : a recupere ref distante de "+"site"+data.idsuccesseur);
+
+		//lancement de l'algo d'election
+		if(data.lance_election==true){
+			Liste listeinit=new Liste();
+			listeinit.li.add(data.idmachine);
+			objsuccesseur.elire(listeinit);
+			data.lance_election=false;
+		}
 		
 	} catch (MalformedURLException e) {
 		// TODO Auto-generated catch block
@@ -56,9 +70,9 @@ public static void main (String[] args) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	
+
 }
-	
-	
-	
+
+
+
 }
