@@ -12,7 +12,7 @@ public class Main {
 
 //compteur est un compteur du nombre de machines
   public static int compteur;
-//nombre total de machines
+//nombre total de machines dans le sous réseau
   public static int nbmachines;
 //nombre de machines presentes au rendez vous de threads dans AnneauImpl
   public static int nbr_presents_rdv;
