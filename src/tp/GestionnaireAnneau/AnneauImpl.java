@@ -28,15 +28,15 @@ public class AnneauImpl extends UnicastRemoteObject implements AnneauInterface {
 
 		//l'id du site est son ordre d'arrivée lorsqu'il appelle le service
 		int id = Main.compteur;
-		Main.compteur--;
 		Donnees result = null;
 		System.out.println(id);
+		Main.compteur--;
 
 		//l'adresse ip du site et son id sont mis dans une map
 
 		//si le nombre de machines max n'est pas depasse
 		try {
-		if(Main.compteur>=1){
+		//if(Main.compteur>=1){
 			Main.hm.put(id,adrIp);
 
 			//rendez vous entre tous les threads
@@ -66,17 +66,18 @@ public class AnneauImpl extends UnicastRemoteObject implements AnneauInterface {
 				result = new Donnees(id+1,Main.hm.get(id+1),false);
 			}
 
-		}
-		else{
-			result =new Donnees(-1,"erreur",false);
-			System.out.println("Nombre max de machines depasse.");
-		}
+//		}
+//		else{
+//			result =new Donnees(-1,"erreur",false);
+//			System.out.println("Nombre max de machines depasse.");
+//		}
 		
 		
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
 		return result;
 
 
