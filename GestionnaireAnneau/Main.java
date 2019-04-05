@@ -1,9 +1,8 @@
-
-
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
 
@@ -28,7 +27,7 @@ public class Main {
 
     mutex= new Semaphore(1);
     rdv = new Semaphore(0);
-    nbmachines =args[0];
+    nbmachines = Integer.parseInt(args[0]);
     compteur = nbmachines;
     nbr_presents_rdv=0;
     hm=new HashMap<Integer,String>();

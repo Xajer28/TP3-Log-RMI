@@ -25,22 +25,26 @@ public class AnneauImpl extends UnicastRemoteObject implements AnneauInterface {
 
 
 	public Donnees recupInfos(String adrIp) throws RemoteException {
-		//l'id du site est son ordre d'arrivée lorsqu'il appelle le service
-		int id = Main.compteur;
-		Main.compteur--;
-		Main.nbr_presents_rdv;
-		Donnees result;
+			//l'id du site est son ordre d'arrivée lorsqu'il appelle le service
+			int id = Main.compteur;
+			Main.compteur--;
+			Donnees result = new Donnees(-1,"erreur",false);;
+		try {
+		
 
 		//l'adresse ip du site et son id sont mis dans une map
 
 		//si le nombre de machines max n'est pas depasse
 		if(Main.compteur>=1){
+			
 			Main.hm.put(id,adrIp);
 
 			//rendez vous entre tous les threads
 			Main.mutex.acquire();
 
+
 			Main.nbr_presents_rdv++;
+
 			if(Main.nbr_presents_rdv== Main.nbmachines)
 				Main.rdv.release();
 
@@ -54,8 +58,7 @@ public class AnneauImpl extends UnicastRemoteObject implements AnneauInterface {
 			// a l'id 1, il doit aussi lancer l'algorithme d'election
 
 			if(id ==Main.nbmachines){
-				result= new Donnees(1,
-				Main.hm.get(1),true);
+				result= new Donnees(1,Main.hm.get(1),true);
 			}
 			else{
 				result = new Donnees(id+1,Main.hm.get(id+1),false);
@@ -63,9 +66,13 @@ public class AnneauImpl extends UnicastRemoteObject implements AnneauInterface {
 
 		}
 		else{
-			result =(-1,"erreur",false);
 			System.out.println("Nombre max de machines depasse.");
 		}
+			
+		} catch (Exception e) {
+			//TODO: handle exception
+		}
+		
 
 		return result;
 	}

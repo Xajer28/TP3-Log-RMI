@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 public class Donnees implements Serializable{
 
   private static final long serialVersionUID = -6199402168457446943L;
