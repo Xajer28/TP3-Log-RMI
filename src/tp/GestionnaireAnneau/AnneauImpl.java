@@ -59,11 +59,11 @@ public class AnneauImpl extends UnicastRemoteObject implements AnneauInterface {
 			// a l'id 1, il doit aussi lancer l'algorithme d'election
 
 			if(id ==Main.nbmachines){
-				result= new Donnees(1,
+				result= new Donnees(id,1,
 				Main.hm.get(1),true);
 			}
 			else{
-				result = new Donnees(id+1,Main.hm.get(id+1),false);
+				result = new Donnees(id,id+1,Main.hm.get(id+1),false);
 			}
 
 //		}
