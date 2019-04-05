@@ -8,13 +8,11 @@ public class Donnees implements Serializable{
 
   public int idmachine;
   public int idsucesseur;
-  public String adrIpsucesseur;
   public boolean lance_election;
 
-  public Donnees(int idmachine, int idsucesseur, String adrIpsucesseur, boolean lance_election){
+  public Donnees(int idmachine, int idsucesseur, boolean lance_election){
     this.idmachine=idmachine;
 	this.idsucesseur=idsucesseur;
-    this.adrIpsucesseur=adrIpsucesseur;
     this.lance_election=lance_election;
   }
 

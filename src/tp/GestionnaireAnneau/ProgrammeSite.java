@@ -25,8 +25,7 @@ public static void main (String[] args) {
 		System.out.println("Machine "+data.idmachine+" lancée !");
 		System.out.println("-----------------------------------------");
 		System.out.println("Mon IP: " +mon_ip);
-		System.out.println("Mon ID: " +data.idmachine);
-		System.out.println("IP de mon successeur: " +data.adrIpsucesseur);		
+		System.out.println("Mon ID: " +data.idmachine);	
 		System.out.println("ID de mon successeur: " +data.idsucesseur);
 		System.out.println("Lancer l'élection ? " +data.lance_election);	
 		System.out.println("-----------------------------------------");
@@ -35,13 +34,13 @@ public static void main (String[] args) {
 		
 		//définition de mon service d'élection
 		election = new ElectionImpl();
-		Naming.rebind("rmi://localhost:3000/election"+data.idmachine, election);
+		Naming.rebind("rmi://"+ipgestionnaire+":3000/election"+data.idmachine, election);
 		
 		//attente que tous les autres sites (enregistrement des objets serveurs)
 		Thread.sleep(6000);
 		
 		//recuperation de la ref distante de l'objet serveur du successeur	
-		objsuccesseur = (ElectionInterface) Naming.lookup("rmi://"+data.adrIpsucesseur+":3000/election"+data.idsucesseur);
+		objsuccesseur = (ElectionInterface) Naming.lookup("rmi://"+ipgestionnaire+":3000/election"+data.idsucesseur);
 		System.out.println("site"+data.idmachine+" : a récupéré ref distante de "+"site"+data.idsucesseur);
 		
 	} catch (MalformedURLException e) {
